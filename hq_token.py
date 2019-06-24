@@ -1,16 +1,7 @@
-import requests
-import json
-api = "https://api-quiz.hype.space"
+import requests,json
+headers = {'Accept-Encoding': "br, gzip, deflate",'Content-Type': "application/x-www-form-urlencoded",'Connection': "keep-alive",'User-Agent': "HQ-iOS/105 CFNetwork/894 Darwin/17.4.0",'x-hq-client': "iOS/1.3.16 b105",'x-hq-device': "iPhone9,3",}
 def send_verification(phone,method):
-    headers = {
-        'Accept-Encoding': "br, gzip, deflate",
-        'Content-Type': "application/x-www-form-urlencoded",
-        'Connection': "keep-alive",
-        'User-Agent': "HQ-iOS/105 CFNetwork/894 Darwin/17.4.0",
-        'x-hq-client': "iOS/1.3.16 b105",
-        'x-hq-device': "iPhone9,3",
-        }
-    response = requests.post(api+"/verifications", data="phone=%2B" + str(phone) + "&method=" + str(method), headers=headers).json()
+    response = requests.post("https://api-quiz.hype.space/verifications", data="phone=%2B" + str(phone) + "&method=" + str(method), headers=headers).json()
     if "verificationId" in response:
         return {"verificationId": response["verificationId"]}
     elif "error" in response:
@@ -21,15 +12,7 @@ def send_verification(phone,method):
     else:
         return response
 def verify_verification(verificationId,code):
-    headers = {
-        'Accept-Encoding': "br, gzip, deflate",
-        'Content-Type': "application/x-www-form-urlencoded",
-        'Connection': "keep-alive",
-        'User-Agent': "HQ-iOS/105 CFNetwork/894 Darwin/17.4.0",
-        'x-hq-client': "iOS/1.3.16 b105",
-        'x-hq-device': "iPhone9,3",
-        }
-    response = requests.post(api+f"/verifications/{verificationId}", data="code=" + code, headers=headers).json()
+    response = requests.post(f"https://api-quiz.hype.space/verifications/{verificationId}", data="code=" + code, headers=headers).json()
     if "accessToken" in response["auth"]:
         return {"accessToken": response["auth"]["accessToken"], "username":response["auth"]["username"]}
     elif "error" in response:
@@ -52,5 +35,3 @@ def main():
     print(f'{r2["username"]}\'s access token:\n==============\n{r2["accessToken"]}\n==============')
 while True:
     main()
-        
-    
